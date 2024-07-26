@@ -1,11 +1,7 @@
 mod password;
-#[macro_use]
 mod utils;
 
-use std::fmt;
 use wasm_bindgen::prelude::*;
-
-extern crate web_sys;
 
 #[wasm_bindgen]
 pub fn get_pass(length: usize, special: bool) -> String {

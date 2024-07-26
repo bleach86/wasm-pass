@@ -1,5 +1,3 @@
-use crate::log;
-use regex::Regex;
 use std::collections::HashSet;
 use wasm_bindgen::prelude::*;
 
@@ -108,15 +106,16 @@ pub fn generate_password(length: usize, special: bool) -> Vec<u8> {
 }
 
 pub fn check_password_strength(password: &str) -> &'static str {
-    let n = (password.chars().collect::<HashSet<_>>().len() as f64).log(2.0);
+    let unique_chars: HashSet<_> = password.chars().collect();
+    let n = (unique_chars.len() as f64).log2();
 
-    let has_digit = Regex::new(r"[0-9]").unwrap().is_match(password);
-    let not_only_digits = Regex::new(r"^[0-9]*$").unwrap().is_match(password);
-    let num = has_digit && !not_only_digits;
+    let has_digit = password.chars().any(|c| c.is_digit(10));
+    let not_only_digits = password.chars().any(|c| !c.is_digit(10));
+    let num = has_digit && not_only_digits;
 
-    let caps = password != password.to_lowercase() && password != password.to_uppercase();
-    let extra = Regex::new(r"^[a-zA-Z0-9]*$").unwrap().is_match(password);
-    let extra = !extra;
+    let caps =
+        password.chars().any(|c| c.is_uppercase()) && password.chars().any(|c| c.is_lowercase());
+    let extra = password.chars().any(|c| !c.is_alphanumeric());
 
     let score = (password.len() as f64)
         * (n + if caps { 1.0 } else { 0.0 }
