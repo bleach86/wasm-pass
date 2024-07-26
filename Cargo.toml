@@ -10,6 +10,9 @@ crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 wasm-bindgen = "0.2.84"
+serde = { version = "1.0", features = ["derive"] }
+serde-wasm-bindgen = "0.4"
+base64 = "0.22.1"
 
 # The `console_error_panic_hook` crate provides better debugging of panics by
 # logging them with `console.error`. This is great for development, but requires
@@ -25,3 +28,7 @@ wasm-bindgen-test = "0.3.34"
 wasm-opt = "-Os"
 opt-level = "s"
 lto = true
+
+[dependencies.web-sys]
+version = "0.3"
+features = ["console"]

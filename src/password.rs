@@ -1,3 +1,4 @@
+use crate::log;
 use std::collections::HashSet;
 use wasm_bindgen::prelude::*;
 
@@ -27,7 +28,7 @@ impl Rand {
         Self { special }
     }
 
-    fn next_index(&mut self, range: usize) -> usize {
+    pub fn next_index(&mut self, range: usize) -> usize {
         let rand_int: usize = getRandomInt();
         rand_int % range
     }
